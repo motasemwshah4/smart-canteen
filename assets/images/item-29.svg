@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-item-29" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ca8a04" />
+      <stop offset="100%" stop-color="#854d0e" />
+    </linearGradient>
+    <linearGradient id="plate-item-29" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#f1f5f9" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow-item-29" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+    <filter id="glow-item-29">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- خلفية التدرج النابضة بالحياة -->
+  <rect width="600" height="400" fill="url(#bg-item-29)" />
+
+  <!-- زخرفة دائرية خلفية ناعمة -->
+  <circle cx="300" cy="180" r="160" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="300" cy="180" r="120" fill="#ffffff" fill-opacity="0.08" />
+
+  <!-- الصحن أو القاعدة الفنية للوجبة -->
+  <ellipse cx="300" cy="225" rx="170" ry="85" fill="#000000" fill-opacity="0.12" />
+  <ellipse cx="300" cy="215" rx="160" ry="78" fill="url(#plate-item-29)" filter="url(#shadow-item-29)" stroke="#e2e8f0" stroke-width="3" />
+  <ellipse cx="300" cy="215" rx="135" ry="62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7" />
+
+  <!-- عناصر الوجبة المركزية والرسومات المتجهة -->
+  <g id="food-art" transform="translate(0, -10)">
+    
+      <!-- لوح سناك مقرمش من رقائق الذرة والعسل -->
+      <rect x="220" y="180" width="160" height="50" rx="8" fill="#eab308" stroke="#ca8a04" stroke-width="3" transform="rotate(-5 300 205)" />
+      <!-- قاعدة شوكولاتة الحليب -->
+      <rect x="220" y="215" width="160" height="15" rx="4" fill="#78350f" transform="rotate(-5 300 205)" />
+      <!-- رقائق ذرة ذهبية محمصة مقرمشة بارزة -->
+      <ellipse cx="250" cy="195" rx="9" ry="5" fill="#fef08a" transform="rotate(25 250 195)" />
+      <ellipse cx="280" cy="190" rx="10" ry="6" fill="#fde047" transform="rotate(-15 280 190)" />
+      <ellipse cx="315" cy="195" rx="9" ry="5" fill="#fef08a" transform="rotate(35 315 195)" />
+      <ellipse cx="345" cy="192" rx="10" ry="6" fill="#fde047" transform="rotate(-10 345 192)" />
+      <!-- خيوط عسل طبيعي لامع -->
+      <path d="M235,185 Q265,195 295,185 T355,190" fill="none" stroke="#f59e0b" stroke-width="3" />
+    
+  </g>
+
+  <!-- أيقونة تعبيرية طافية مع تأثير الظل -->
+  <g transform="translate(480, 50)" filter="url(#shadow-item-29)">
+    <circle cx="0" cy="0" r="32" fill="#ffffff" />
+    <text x="0" y="11" font-size="30" text-anchor="middle">🥣</text>
+  </g>
+
+  <!-- شارة التصنيف العلوية -->
+  <g transform="translate(40, 45)">
+    <rect x="0" y="0" width="140" height="34" rx="17" fill="#000000" fill-opacity="0.3" backdrop-filter="blur(4px)" />
+    <text x="70" y="22" fill="#ffffff" font-family="'Cairo', sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+      الحلويات والتسالي
+    </text>
+  </g>
+
+  <!-- شريط اسم الصنف في الأسفل مع تباين عالي وقراءة واضحة -->
+  <g transform="translate(0, 330)">
+    <rect width="600" height="70" fill="#0f172a" fill-opacity="0.85" />
+    <text x="300" y="44" fill="#ffffff" font-family="'Cairo', 'Tajawal', sans-serif" font-size="22" font-weight="900" text-anchor="middle">
+      كورن فليكس بار
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-item-14" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="plate-item-14" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#f1f5f9" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow-item-14" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+    <filter id="glow-item-14">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- خلفية التدرج النابضة بالحياة -->
+  <rect width="600" height="400" fill="url(#bg-item-14)" />
+
+  <!-- زخرفة دائرية خلفية ناعمة -->
+  <circle cx="300" cy="180" r="160" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="300" cy="180" r="120" fill="#ffffff" fill-opacity="0.08" />
+
+  <!-- الصحن أو القاعدة الفنية للوجبة -->
+  <ellipse cx="300" cy="225" rx="170" ry="85" fill="#000000" fill-opacity="0.12" />
+  <ellipse cx="300" cy="215" rx="160" ry="78" fill="url(#plate-item-14)" filter="url(#shadow-item-14)" stroke="#e2e8f0" stroke-width="3" />
+  <ellipse cx="300" cy="215" rx="135" ry="62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7" />
+
+  <!-- عناصر الوجبة المركزية والرسومات المتجهة -->
+  <g id="food-art" transform="translate(0, -10)">
+    
+      <!-- زبدية ماك اند تشيز ذهبية غنية -->
+      <ellipse cx="300" cy="210" rx="90" ry="45" fill="#d97706" />
+      <!-- مكرونة كوع حلزونية غارقة بالجبن -->
+      <path d="M240,190 Q255,175 270,190" fill="none" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" />
+      <path d="M280,180 Q295,165 310,180" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round" />
+      <path d="M320,185 Q335,170 350,185" fill="none" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" />
+      <path d="M255,210 Q270,195 285,210" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round" />
+      <path d="M295,215 Q310,200 325,215" fill="none" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" />
+      <path d="M335,210 Q350,195 365,210" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round" />
+      <!-- لمعة الجبنة الكريمية المذابة -->
+      <ellipse cx="300" cy="195" rx="70" ry="25" fill="#fef08a" opacity="0.4" />
+    
+  </g>
+
+  <!-- أيقونة تعبيرية طافية مع تأثير الظل -->
+  <g transform="translate(480, 50)" filter="url(#shadow-item-14)">
+    <circle cx="0" cy="0" r="32" fill="#ffffff" />
+    <text x="0" y="11" font-size="30" text-anchor="middle">🫕</text>
+  </g>
+
+  <!-- شارة التصنيف العلوية -->
+  <g transform="translate(40, 45)">
+    <rect x="0" y="0" width="140" height="34" rx="17" fill="#000000" fill-opacity="0.3" backdrop-filter="blur(4px)" />
+    <text x="70" y="22" fill="#ffffff" font-family="'Cairo', sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+      الباستا والأطباق الساخنة
+    </text>
+  </g>
+
+  <!-- شريط اسم الصنف في الأسفل مع تباين عالي وقراءة واضحة -->
+  <g transform="translate(0, 330)">
+    <rect width="600" height="70" fill="#0f172a" fill-opacity="0.85" />
+    <text x="300" y="44" fill="#ffffff" font-family="'Cairo', 'Tajawal', sans-serif" font-size="22" font-weight="900" text-anchor="middle">
+      ماك اند تشيز
+    </text>
+  </g>
+</svg>

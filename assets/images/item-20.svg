@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-item-20" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#854d0e" />
+    </linearGradient>
+    <linearGradient id="plate-item-20" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#f1f5f9" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow-item-20" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+    <filter id="glow-item-20">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- خلفية التدرج النابضة بالحياة -->
+  <rect width="600" height="400" fill="url(#bg-item-20)" />
+
+  <!-- زخرفة دائرية خلفية ناعمة -->
+  <circle cx="300" cy="180" r="160" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="300" cy="180" r="120" fill="#ffffff" fill-opacity="0.08" />
+
+  <!-- الصحن أو القاعدة الفنية للوجبة -->
+  <ellipse cx="300" cy="225" rx="170" ry="85" fill="#000000" fill-opacity="0.12" />
+  <ellipse cx="300" cy="215" rx="160" ry="78" fill="url(#plate-item-20)" filter="url(#shadow-item-20)" stroke="#e2e8f0" stroke-width="3" />
+  <ellipse cx="300" cy="215" rx="135" ry="62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7" />
+
+  <!-- عناصر الوجبة المركزية والرسومات المتجهة -->
+  <g id="food-art" transform="translate(0, -10)">
+    
+      <path d="M265,140 L275,225 Q300,240 325,225 L335,140 Z" fill="#fde047" stroke="#eab308" stroke-width="3" />
+      <ellipse cx="300" cy="140" rx="35" ry="10" fill="#fef08a" />
+      <!-- تفاحة حمراء طازجة بورقة خضراء بجانب الكأس -->
+      <circle cx="240" cy="215" r="24" fill="#dc2626" stroke="#991b1b" stroke-width="2" />
+      <path d="M240,191 Q245,180 250,186" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round" />
+      <path d="M246,183 Q254,175 258,184 Q252,188 246,183 Z" fill="#22c55e" />
+      <!-- مصاصة شرب ذهبية -->
+      <line x1="310" y1="180" x2="335" y2="105" stroke="#eab308" stroke-width="5" stroke-linecap="round" />
+    
+  </g>
+
+  <!-- أيقونة تعبيرية طافية مع تأثير الظل -->
+  <g transform="translate(480, 50)" filter="url(#shadow-item-20)">
+    <circle cx="0" cy="0" r="32" fill="#ffffff" />
+    <text x="0" y="11" font-size="30" text-anchor="middle">🍏</text>
+  </g>
+
+  <!-- شارة التصنيف العلوية -->
+  <g transform="translate(40, 45)">
+    <rect x="0" y="0" width="140" height="34" rx="17" fill="#000000" fill-opacity="0.3" backdrop-filter="blur(4px)" />
+    <text x="70" y="22" fill="#ffffff" font-family="'Cairo', sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+      العصائر والمشروبات
+    </text>
+  </g>
+
+  <!-- شريط اسم الصنف في الأسفل مع تباين عالي وقراءة واضحة -->
+  <g transform="translate(0, 330)">
+    <rect width="600" height="70" fill="#0f172a" fill-opacity="0.85" />
+    <text x="300" y="44" fill="#ffffff" font-family="'Cairo', 'Tajawal', sans-serif" font-size="22" font-weight="900" text-anchor="middle">
+      عصير تفاح
+    </text>
+  </g>
+</svg>

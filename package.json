@@ -1,0 +1,22 @@
+{
+  "name": "kanteen",
+  "version": "1.0.0",
+  "description": "مقصف الفُسحة - الموقع الذكي لمقصف مدرسة الصف الثامن",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "node test/store.test.js"
+  },
+  "keywords": [
+    "canteen",
+    "school",
+    "cafeteria",
+    "arabic"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-git": "^1.44.18"
+  }
+}

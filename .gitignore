@@ -1,0 +1,16 @@
+# Node dependencies
+node_modules/
+package-lock.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Logs and temp files
+*.log
+npm-debug.log*
+
+# Environment and local config
+.env
+.env.local

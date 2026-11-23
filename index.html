@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مقصف الفُسحة | مشروع الطالبة زينة اللبدي - الصف الثامن</title>
+  <meta name="description" content="الموقع الذكي لمقصف مدرسة الصف الثامن - مشروع مخصص للطالبة زينة اللبدي. اطلب وجبتك للفسحة (10:00 ص) واستلمها بدون انتظار">
+  
+  <!-- خطوط عربية حديثة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            tajawal: ['Tajawal', 'sans-serif']
+          },
+          colors: {
+            primary: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46'
+            },
+            canteen: {
+              cream: '#fffdfa',
+              amber: '#f59e0b',
+              orange: '#ea580c',
+              dark: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons & Confetti & Supabase JS -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ملف التصميم والأنيميشن المخصص -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#faf8f5] text-slate-800 font-cairo antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white relative">
+
+  <!-- عناصر خلفية تطفو بنعومة لزيادة التفاعلية والبهجة المدرسية -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-25 select-none" aria-hidden="true">
+    <span class="absolute top-16 left-8 text-4xl floating-element">🥪</span>
+    <span class="absolute top-48 right-12 text-3xl floating-element-reverse">🍕</span>
+    <span class="absolute top-96 left-1/4 text-4xl floating-element">🧃</span>
+    <span class="absolute bottom-60 right-1/4 text-3xl floating-element-reverse">🧁</span>
+    <span class="absolute bottom-20 left-12 text-4xl floating-element">🍎</span>
+  </div>
+
+  <!-- شريط التنبيهات العلوي المدرسي الموحد للفسحة 10:00 ص -->
+  <div class="relative z-10 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white text-xs sm:text-sm py-2 px-4 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-block animate-bounce">🥪</span>
+        <span class="font-bold">مقصف الفُسحة المدرسي:</span>
+        <span>موعد الفسحة المدرسية الوحيدة هو الساعة <strong>10:00 صباحاً</strong> • اطلب قبل الجرس واستلم فطورك طازجاً!</span>
+      </div>
+      
+      <!-- ويدجت العد التنازلي التفاعلي للفسحة -->
+      <div class="flex items-center gap-2 bg-emerald-950/70 border border-amber-400/40 px-3 py-1 rounded-full text-xs font-mono font-bold timer-pulse">
+        <span class="text-amber-300">⏰ متبقي على الفسحة (10:00 ص):</span>
+        <span id="header-countdown" class="text-white font-black tracking-wider">--:--:--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- الترويسة الرئيسية وشريط التنقل -->
+  <header class="relative z-40 sticky top-0 bg-white/95 backdrop-blur-md border-b border-amber-100 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- الشعار وهوية الموقع مع شارة زينة اللبدي -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="app.showSection('menu')">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 text-2xl transform hover:rotate-6 transition-transform floating-element">
+          🥪
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">مقصف الفُسحة</h1>
+            <span class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-xs">
+              مشروع زينة اللبدي ⭐
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">المقصف الذكي لطلاب الصف الثامن • موعد الفسحة: 10:00 ص</p>
+        </div>
+      </div>
+
+      <!-- أدوات الحساب والتبديل والسلة -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- معلومات الحساب النشط وزر الدخول / التسجيل -->
+        <button onclick="app.openAuthModal()" class="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 transition-all shadow-xs">
+          <div id="nav-user-avatar" class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-black">
+            ز
+          </div>
+          <span id="nav-user-name" class="max-w-[120px] truncate">زينة اللبدي</span>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+        </button>
+
+        <!-- زر كرت آخر طلب المباشر للطلاب -->
+        <button id="btn-show-ticket-nav" onclick="app.showMyLatestTicket()" class="px-3 sm:px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs">
+          <i data-lucide="ticket" class="w-4 h-4 text-amber-600"></i>
+          <span class="hidden sm:inline">كرت استلامي</span>
+        </button>
+
+        <!-- زر مؤشر الاتصال السحابي بـ Supabase -->
+        <button id="btn-supabase-status" onclick="app.openSupabaseModal()" class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs border border-emerald-500/40" title="إدارة وإعداد قاعدة بيانات Supabase السحابية">
+          <span id="supabase-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="supabase-status-text" class="hidden sm:inline">Supabase ⚡</span>
+        </button>
+
+        <!-- زر لوحة صاحب المقصف (يظهر عند تسجيل حساب المدير) -->
+        <button id="btn-owner-dashboard-nav" onclick="app.showSection('owner-dashboard')" class="hidden px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all flex items-center gap-2">
+          <i data-lucide="chef-hat" class="w-4 h-4"></i>
+          <span class="hidden md:inline">لوحة طلبات المطبخ</span>
+          <span id="nav-pending-badge" class="bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">0</span>
+        </button>
+
+        <!-- زر تتبع طلبات الطالب -->
+        <button id="btn-my-orders" onclick="app.showOrdersModal()" class="relative px-3 sm:px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2">
+          <i data-lucide="receipt" class="w-4 h-4 text-emerald-600"></i>
+          <span class="hidden sm:inline">طلباتي</span>
+          <span id="my-orders-count" class="bg-emerald-600 text-white text-xs px-1.5 py-0.5 rounded-full">0</span>
+          <span id="ready-orders-indicator" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full animate-ping"></span>
+        </button>
+
+        <!-- زر سلة الطلبات -->
+        <button id="btn-cart-toggle" onclick="app.toggleCartModal()" class="relative px-3.5 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-emerald-600/20 transition-all flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">السلة</span>
+          <span id="cart-badge" class="bg-amber-400 text-slate-900 font-black text-xs px-2 py-0.5 rounded-full">0</span>
+          <span id="cart-nav-total" class="hidden md:inline text-xs font-bold text-emerald-100">0.00 د.أ</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- تنبيه صوتي / شريط الإشعار العائم للطلب الجاهز -->
+  <div id="ready-alert-banner" class="relative z-30 hidden bg-emerald-500 text-white py-3 px-4 shadow-lg border-b border-emerald-600 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-white text-emerald-600 flex items-center justify-center font-black text-lg ready-pulse">
+          🔔
+        </div>
+        <div>
+          <h4 class="font-black text-sm sm:text-base">طلبك أصبح جاهزاً الآن للاستلام من المقصف!</h4>
+          <p class="text-xs text-emerald-100">توجه فوراً إلى نافذة الاستلام المخصصة للصف الثامن وأظهر كرت الطلب لمسؤول المقصف.</p>
+        </div>
+      </div>
+      <button onclick="app.openLatestReadyTicket()" class="px-4 py-2 bg-white text-emerald-800 hover:bg-emerald-50 rounded-xl text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap">
+        عرض كرت الاستلام 🎫
+      </button>
+    </div>
+  </div>
+
+  <!-- المحتوى الرئيسي للموقع -->
+  <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ============================================== -->
+    <!-- قسم الطلاب / استعراض القائمة والطلب مسبقاً -->
+    <!-- ============================================== -->
+    <div id="student-section">
+      
+      <!-- بطاقة ترحيبية خاصة ومميزة لإبراز اسم زينة اللبدي -->
+      <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white p-6 sm:p-10 mb-8 shadow-xl">
+        <div class="relative z-10 max-w-2xl space-y-4">
+          
+          <!-- شارة التكريم الرسمية للطالبة زينة اللبدي -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400 text-slate-900 text-xs sm:text-sm font-black shadow-md">
+            <span>⭐ فكرة وتصميم:</span>
+            <span>الطالبة زينة اللبدي (الصف الثامن - أ)</span>
+          </div>
+
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold border border-white/20">
+            <span>✨ الحساب الحالي:</span>
+            <strong id="user-display-name">زينة اللبدي (الصف الثامن - أ)</strong>
+          </div>
+
+          <h2 class="text-2xl sm:text-4xl font-black leading-tight">
+            ماذا تحب أن تتناول في الفسحة (10:00 ص) اليوم؟ 🥪🍎
+          </h2>
+          
+          <p class="text-emerald-100 text-xs sm:text-sm leading-relaxed">
+            مرحباً بكم في مقصفنا الذكي! الفسحة المدرسية تبدأ الساعة <strong>10:00 صباحاً</strong> تماماً. اختر فطورك الطازج الآن، وسيقوم مسؤول المقصف بتحضيره لتستلمه جاهزاً وساخناً فور رنين الجرس دون الوقوف في الطابور!
+          </p>
+
+          <!-- بطاقة العد التنازلي التفاعلية داخل البانر -->
+          <div class="bg-black/25 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 inline-flex items-center gap-3">
+            <span class="text-xl">⏳</span>
+            <div>
+              <span class="text-[11px] text-emerald-200 block font-bold">الوقت المتبقي لفسحة العاشرة صباحاً:</span>
+              <span id="hero-countdown" class="font-mono text-lg font-black text-amber-300">جاري الحساب...</span>
+            </div>
+          </div>
+
+          <!-- شريط البحث السريع والفرز -->
+          <div class="relative max-w-xl pt-2">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="ابحث عن وجبتك المفضلة (بيتزا، عصير، باستا، شنينه...)" 
+              class="w-full pl-10 pr-12 py-3.5 rounded-2xl text-slate-800 placeholder-slate-400 bg-white shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-300 text-sm font-medium transition-all"
+              oninput="app.handleSearch(this.value)"
+            >
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pt-2">
+              <i data-lucide="search" class="w-5 h-5"></i>
+            </div>
+            <button id="search-clear-btn" onclick="app.clearSearch()" class="hidden absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs bg-slate-100 px-2 py-1 rounded-lg pt-2">
+              مسح
+            </button>
+          </div>
+        </div>
+
+        <!-- زخرفة فنية خلفية مرحة -->
+        <div class="absolute -left-10 -bottom-10 opacity-15 pointer-events-none text-9xl select-none floating-element">
+          🍕🥪🧃
+        </div>
+      </section>
+
+      <!-- شريط تصنيفات قائمة الطعام (Categories) -->
+      <section class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">📋</span>
+            <h3 class="text-xl font-black text-slate-900">أقسام المقصف المدرسية</h3>
+          </div>
+          <span id="items-count-badge" class="text-xs text-slate-500 font-bold bg-slate-100 px-3 py-1 rounded-full">
+            29 صنفاً طازجاً
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-3 pt-1 scrollbar-none" id="categories-container">
+          <!-- تملأ ديناميكياً بواسطة app.js -->
+        </div>
+      </section>
+
+      <!-- شبكة بطاقات الوجبات وقائمة الطعام -->
+      <section>
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- تملأ ديناميكياً بواسطة app.js مع وصف الصورة التفصيلي لكل صنف -->
+        </div>
+
+        <div id="no-results" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-200">
+          <div class="text-5xl mb-3">🔍</div>
+          <h4 class="text-lg font-bold text-slate-800 mb-1">لم نجد أي صنف يطابق بحثك!</h4>
+          <p class="text-sm text-slate-500 mb-4">جرب كتابة اسم وجبة أخرى مثل "ساندويش"، "بيتزا"، أو "عصير".</p>
+          <button onclick="app.clearSearch()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">
+            عرض كافة أصناف المنيو
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- قسم إدارة المقصف (صاحب المقصف) / المطبخ والطلبات -->
+    <!-- ============================================== -->
+    <div id="owner-section" class="hidden space-y-8">
+      
+      <!-- بطاقة تعريفية وترحيبية بصاحب المقصف -->
+      <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner border border-white/20">
+              👨‍🍳
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="bg-amber-300 text-slate-900 text-xs font-black px-2.5 py-0.5 rounded-full">شاشة المطبخ والمخزون</span>
+                <span class="text-amber-200 text-xs">فسحة 10:00 صباحاً</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-black">لوحة إدارة المقصف المدرسي</h2>
+              <p class="text-amber-100 text-xs sm:text-sm">راجع طلبات طلاب الصف الثامن لفسحة 10:00 صباحاً، وجهّزها، وتحكم في توفر الأصناف والأسعار في المقصف.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="app.seedNewTestOrder()" class="px-3.5 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-white/30">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>إضافة طلب تجريبي</span>
+            </button>
+            <button onclick="app.resetData()" class="px-3.5 py-2 bg-red-600/80 hover:bg-red-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+              <span>إعادة ضبط البيانات</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- بطاقات الإحصائيات الفورية -->
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 mb-1">إجمالي طلبات الفسحة</p>
+            <h3 id="stat-total-orders" class="text-2xl font-black text-slate-800">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-amber-700 mb-1">بانتظار الموافقة</p>
+            <h3 id="stat-pending-orders" class="text-2xl font-black text-amber-600">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center animate-pulse">
+            <i data-lucide="clock" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-indigo-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-indigo-700 mb-1">قيد التحضير بالمطبخ</p>
+            <h3 id="stat-preparing-orders" class="text-2xl font-black text-indigo-600">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-emerald-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-emerald-700 mb-1">جاهزة للاستلام</p>
+            <h3 id="stat-ready-orders" class="text-2xl font-black text-emerald-600">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="col-span-2 lg:col-span-1 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 mb-1">المبيعات الإجمالية</p>
+            <h3 id="stat-total-revenue" class="text-2xl font-black text-emerald-700">0.00 د.أ</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="coins" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- تبويبات إدارة صاحب المقصف (الطلبات الحالية vs توفر الأصناف) -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <button id="owner-tab-orders" onclick="app.switchOwnerTab('orders')" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-emerald-600 text-white shadow-sm transition-all flex items-center gap-2">
+              <i data-lucide="list-ordered" class="w-4 h-4"></i>
+              <span>طابور طلبات فسحة (10:00 ص)</span>
+            </button>
+            <button id="owner-tab-inventory" onclick="app.switchOwnerTab('inventory')" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4"></i>
+              <span>إدارة وتعديل مخزون المقصف وتوفر الأصناف</span>
+            </button>
+          </div>
+
+          <div id="owner-filters" class="flex items-center gap-2 text-xs">
+            <span class="text-slate-400 font-bold">الحالة:</span>
+            <select id="owner-status-filter" onchange="app.renderOwnerOrders()" class="bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 font-bold text-slate-700 focus:outline-none">
+              <option value="all">كافة الحالات</option>
+              <option value="pending">قيد الانتظار (جديدة)</option>
+              <option value="approved">قيد التحضير</option>
+              <option value="ready">جاهز للاستلام</option>
+              <option value="delivered">تم التسليم</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- محتوى تبويب طابور الطلبات -->
+        <div id="owner-orders-view" class="pt-6">
+          <div id="owner-orders-list" class="space-y-4">
+            <!-- تملأ ديناميكياً بواسطة app.js -->
+          </div>
+          <div id="owner-no-orders" class="hidden text-center py-16">
+            <div class="text-4xl mb-2">🎉</div>
+            <h4 class="text-base font-bold text-slate-700">لا توجد طلبات في هذا التصنيف حالياً</h4>
+            <p class="text-xs text-slate-400">أي طلب جديد يقدمه الطلاب لفسحة 10:00 ص سيظهر هنا فوراً مع تنبيه صوتي.</p>
+          </div>
+        </div>
+
+        <!-- محتوى تبويب إدارة توفر الأصناف (المخزون المدرسي) -->
+        <div id="owner-inventory-view" class="hidden pt-6 space-y-6">
+          
+          <div class="flex flex-wrap items-center justify-between gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+              <span class="bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-xs text-slate-700">
+                📦 إجمالي الأصناف: <strong id="inv-total-count" class="text-slate-900">29</strong>
+              </span>
+              <span class="bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl shadow-xs text-emerald-800">
+                ✅ متوفر بالمقصف: <strong id="inv-available-count" class="text-emerald-900">29</strong>
+              </span>
+              <span class="bg-red-100 border border-red-200 px-3 py-1.5 rounded-xl shadow-xs text-red-800">
+                ❌ نفد مؤقتاً: <strong id="inv-out-count" class="text-red-900">0</strong>
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="app.openAddItemModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>إضافة صنف جديد للمقصف</span>
+              </button>
+              <button onclick="app.resetInventoryDefaults()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>استعادة الأصناف الأصلية</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- أدوات التصفية والبحث في المخزون -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <input 
+                type="text" 
+                id="inv-search-input" 
+                placeholder="ابحث في أصناف المقصف باسم الصنف..." 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500"
+                oninput="app.handleInventoryFilter()"
+              >
+            </div>
+            <div>
+              <select id="inv-cat-filter" onchange="app.handleInventoryFilter()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none">
+                <option value="all">كافة الأقسام والتصنيفات</option>
+                <option value="sandwiches">الساندويشات والبيتزا</option>
+                <option value="salads">السلطات والمقبلات</option>
+                <option value="pasta">الباستا والأطباق الساخنة</option>
+                <option value="drinks">العصائر والمشروبات</option>
+                <option value="main">الأطباق الرئيسية</option>
+                <option value="sweets">الحلويات والتسالي</option>
+              </select>
+            </div>
+            <div>
+              <select id="inv-status-filter" onchange="app.handleInventoryFilter()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none">
+                <option value="all">كافة حالات التوفر</option>
+                <option value="available">المتوفر فقط بالمقصف</option>
+                <option value="out_of_stock">النافد مؤقتاً فقط</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="owner-inventory-table" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- تملأ ديناميكياً بواسطة app.js -->
+          </div>
+
+          <div id="inv-no-results" class="hidden text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+            <p class="text-sm font-bold text-slate-600">لا توجد أصناف تطابق فلاتر البحث في المخزون.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- النوافذ المنبثقة (Modals) والعناصر التفاعلية -->
+  <!-- ============================================== -->
+
+  <!-- نافذة تسجيل الدخول والتسجيل البسيط (Auth Modal) مع الدخول السريع الديناميكي -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 fade-in overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-100 bg-slate-50">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+              <i data-lucide="user-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-slate-900 text-base">بوابة حسابات مقصف المدرسة</h3>
+              <p class="text-[11px] text-slate-400">سجّل دخولك أو أنشئ حساب طالب جديد</p>
+            </div>
+          </div>
+          <button onclick="app.closeAuthModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 hover:bg-slate-300 flex items-center justify-center">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 p-1 bg-slate-200/80 rounded-xl text-xs font-bold">
+          <button id="auth-tab-btn-signin" onclick="app.switchAuthTab('signin')" class="py-2 rounded-lg bg-white text-emerald-800 shadow-xs transition-all">
+            تسجيل الدخول
+          </button>
+          <button id="auth-tab-btn-signup" onclick="app.switchAuthTab('signup')" class="py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+            حساب طالب جديد ✨
+          </button>
+        </div>
+      </div>
+
+      <!-- محتوى تبويب تسجيل الدخول -->
+      <div id="auth-view-signin" class="p-6 space-y-4 text-xs">
+        
+        <!-- قائمة الدخول السريع الديناميكية القابلة للإضافة والتخصيص -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-500 text-[11px]">قائمة الدخول السريع (الدخول بنقرة زر):</span>
+            <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">1-Click Login</span>
+          </div>
+          
+          <div id="quick-login-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <!-- تملأ ديناميكياً من store.getQuickLoginUsers() بواسطة app.js -->
+          </div>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-3 text-slate-400 text-[10px] font-bold">أو تسجيل الدخول اليدوي</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <!-- استمارة تسجيل الدخول اليدوي -->
+        <form onsubmit="app.handleManualLogin(event)" class="space-y-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">اسم الطالب أو اسم المستخدم</label>
+            <input type="text" id="login-username" placeholder="مثال: زينة اللبدي، أو اسمك..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">كلمة المرور (الافتراضية: 123)</label>
+            <input type="password" id="login-password" value="123" placeholder="أدخل كلمة المرور..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <!-- خيار إضافة الحساب إلى قائمة الدخول السريع -->
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="login-save-quick" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300">
+            <label for="login-save-quick" class="text-xs text-slate-600 font-bold cursor-pointer select-none">
+              حفظ هذا الحساب في قائمة الدخول السريع على هذا الجهاز 📌
+            </label>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>تسجيل الدخول إلى حسابي</span>
+          </button>
+        </form>
+
+      </div>
+
+      <!-- محتوى تبويب تسجيل طالب جديد (Sign Up) -->
+      <div id="auth-view-signup" class="hidden p-6 space-y-3.5 text-xs">
+        <p class="text-[11px] text-slate-500">
+          أهلاً بك! يمكنك إنشاء حساب طالب مدرسي بسهولة للطلب من مقصف المدرسة واستلام وجبتك في فسحة العاشرة صباحاً.
+        </p>
+
+        <form onsubmit="app.handleStudentSignup(event)" class="space-y-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">اسم الطالب/ـة الكامل *</label>
+            <input type="text" id="signup-name" required placeholder="مثال: أحمد يوسف خليل" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">الصف الدراسي *</label>
+              <select id="signup-grade" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none">
+                <option value="الصف الثامن" selected>الصف الثامن</option>
+                <option value="الصف السابع">الصف السابع</option>
+                <option value="الصف التاسع">الصف التاسع</option>
+                <option value="الصف العاشر">الصف العاشر</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-600 mb-1">الشعبة *</label>
+              <select id="signup-section" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none">
+                <option value="الشعبة أ" selected>الشعبة أ</option>
+                <option value="الشعبة ب">الشعبة ب</option>
+                <option value="الشعبة ج">الشعبة ج</option>
+                <option value="الشعبة د">الشعبة د</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">كلمة مرور بسيطة للحساب *</label>
+            <input type="password" id="signup-password" required value="123" placeholder="أدخل كلمة مرور سهلة التذكر..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <!-- خيار إضافة الطالب المسجل للدخول السريع تلقائياً -->
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="signup-save-quick" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300">
+            <label for="signup-save-quick" class="text-xs text-slate-600 font-bold cursor-pointer select-none">
+              إضافة هذا الطالب إلى قائمة الدخول السريع (للدخول الفوري مستقبلاً) 🚀
+            </label>
+          </div>
+
+          <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-black text-xs shadow-md shadow-emerald-600/30 transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            <span>إنشاء الحساب وبدء الطلب فوراً ✨</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 1. نافذة تفاصيل الصنف ووصف الصورة الكامل -->
+  <div id="item-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-slate-100 fade-in max-h-[90vh] flex flex-col">
+      <div class="relative h-60 w-full overflow-hidden bg-slate-100">
+        <img id="modal-item-img" src="" alt="" class="w-full h-full object-cover">
+        <button onclick="app.closeItemModal()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-all">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <span id="modal-item-category" class="absolute bottom-4 right-4 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"></span>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-grow">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="modal-item-name" class="text-2xl font-black text-slate-900"></h3>
+            <p id="modal-item-calories" class="text-xs text-slate-500 font-semibold mt-0.5"></p>
+          </div>
+          <div class="text-left">
+            <span id="modal-item-price" class="text-2xl font-black text-emerald-700 font-mono"></span>
+            <span class="text-xs text-slate-400 block font-normal">شامل الرسوم المدرسية</span>
+          </div>
+        </div>
+
+        <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-4">
+          <div class="flex items-center gap-1.5 text-amber-800 text-xs font-bold mb-1.5">
+            <i data-lucide="image" class="w-4 h-4"></i>
+            <span>وصف الصورة التفصيلي:</span>
+          </div>
+          <p id="modal-item-img-desc" class="text-xs text-amber-900/90 leading-relaxed font-medium"></p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">المكونات الطازجة</h4>
+          <p id="modal-item-ingredients" class="text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100"></p>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <span>⏱️ وقت التجهيز: <strong id="modal-item-prep" class="text-slate-700"></strong></span>
+          <span>🏫 موعد الاستلام: الفسحة (10:00 ص)</span>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center gap-3">
+        <div class="flex items-center border border-slate-200 rounded-xl bg-white p-1">
+          <button onclick="app.changeModalQty(-1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700">-</button>
+          <span id="modal-qty" class="w-10 text-center font-black text-sm">1</span>
+          <button onclick="app.changeModalQty(1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700">+</button>
+        </div>
+        <button id="modal-add-btn" onclick="app.confirmModalAdd()" class="flex-grow py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>إضافة إلى سلة الفسحة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. درج / نافذة السلة وتأكيد الطلب للفسحة (Checkout) -->
+  <div id="cart-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 fade-in max-h-[92vh] flex flex-col overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-800 text-lg">سلة وجبات الفسحة (10:00 ص)</h3>
+            <p class="text-xs text-slate-400">المقصف المدرسي • الصف الثامن</p>
+          </div>
+        </div>
+        <button onclick="app.toggleCartModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 hover:bg-slate-300 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+        <div id="cart-items-container" class="space-y-3">
+          <!-- تملأ ديناميكياً -->
+        </div>
+
+        <div id="cart-empty-state" class="hidden text-center py-12">
+          <div class="text-5xl mb-3">🛒</div>
+          <h4 class="font-bold text-slate-700 text-base mb-1">سلتك المدرسية فارغة!</h4>
+          <p class="text-xs text-slate-400 mb-4">اختر من قائمة الساندويشات أو العصائر أو الحلويات لتجربة الفسحة الشهية.</p>
+          <button onclick="app.toggleCartModal()" class="px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">
+            تصفح قائمة الطعام
+          </button>
+        </div>
+
+        <!-- استمارة معلومات الطالب لموعد الفسحة 10:00 ص -->
+        <div id="checkout-form-section" class="border-t border-slate-100 pt-5 space-y-4">
+          <h4 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+            <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i>
+            <span>معلومات استلام وجبة الفسحة:</span>
+          </h4>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">اسم الطالب/ـة</label>
+              <input type="text" id="order-student-name" value="زينة اللبدي" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">الصف والشعبة</label>
+              <input type="text" id="order-student-grade" value="الصف الثامن (أ)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+            </div>
+          </div>
+
+          <div class="p-3 bg-amber-50 rounded-2xl border border-amber-200 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-base">⏰</span>
+              <div>
+                <span class="font-bold text-amber-900 block">موعد الاستلام المحدد:</span>
+                <span class="text-amber-800">الفسحة المدرسية الوحيدة (10:00 صباحاً)</span>
+              </div>
+            </div>
+            <span class="bg-amber-200 text-amber-900 font-mono font-black px-2.5 py-1 rounded-xl text-[11px]">
+              10:00 AM
+            </span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">ملاحظات خاصة لمسؤول المقصف (اختياري)</label>
+            <input type="text" id="order-notes" placeholder="مثال: بدون بصل، تسخين خفيف، حساسية..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+      </div>
+
+      <div id="cart-footer" class="p-5 bg-slate-50 border-t border-slate-200 space-y-3">
+        <div class="flex items-center justify-between text-slate-600 text-sm">
+          <span>المجموع الكلي:</span>
+          <span id="cart-total-price" class="text-2xl font-black text-emerald-700 font-mono">0.00 د.أ</span>
+        </div>
+        <button id="btn-submit-order" onclick="app.submitOrder()" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-2xl font-black text-sm shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
+          <span>تأكيد الطلب واستلام كرت الفسحة 🎫</span>
+        </button>
+        <p class="text-center text-[11px] text-slate-400">الدفع نقداً عند استلام الوجبة من نافذة المقصف بالفسحة</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. كرت الاستلام الرقمي المدرسي (Pickup Voucher Ticket) مع مسار المراحل وإصلاح الطباعة والعرض -->
+  <div id="ticket-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 ticket-pop overflow-hidden">
+      
+      <!-- محتوى التذكرة القابلة للعرض والطباعة المباشرة -->
+      <div id="printable-ticket" class="p-6 bg-white relative">
+        <div class="text-center pb-5 border-b-2 border-dashed border-slate-200">
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 text-2xl mb-2 floating-element">
+            🥪
+          </div>
+          <h3 class="text-xl font-black text-slate-900">كرت استلام وجبة مقصف الفسحة</h3>
+          <p class="text-xs text-slate-500 font-bold">مدرسة المستقبل • مشروع الطالبة زينة اللبدي</p>
+          <div class="mt-3 inline-block bg-slate-900 text-amber-300 font-mono text-2xl font-black px-4 py-1.5 rounded-xl tracking-wider shadow-inner">
+            <span id="ticket-order-id">#ORD-000</span>
+          </div>
+        </div>
+
+        <!-- مسار تجهيز الطلب التفاعلي والمرئي بوضوح -->
+        <div class="py-4 border-b-2 border-dashed border-slate-200">
+          <div class="text-xs font-bold text-slate-400 mb-2">متابعة حالة التجهيز:</div>
+          <div id="ticket-status-pill" class="p-3 rounded-2xl text-center text-xs font-black transition-all mb-3">
+            <!-- يملأ ديناميكياً -->
+          </div>
+
+          <!-- مسار التقدم البصري المرحلي في الكرت -->
+          <div class="grid grid-cols-4 gap-1 text-center text-[10px] font-bold text-slate-500 pt-1">
+            <div id="ticket-step-1" class="p-1 rounded-lg">
+              <div class="w-6 h-6 mx-auto rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-1 text-xs font-black">1</div>
+              <span>تم الطلب</span>
+            </div>
+            <div id="ticket-step-2" class="p-1 rounded-lg">
+              <div class="w-6 h-6 mx-auto rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-1 text-xs font-black">2</div>
+              <span>بالمطبخ</span>
+            </div>
+            <div id="ticket-step-3" class="p-1 rounded-lg">
+              <div class="w-6 h-6 mx-auto rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-1 text-xs font-black">3</div>
+              <span>جاهز 🔔</span>
+            </div>
+            <div id="ticket-step-4" class="p-1 rounded-lg">
+              <div class="w-6 h-6 mx-auto rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-1 text-xs font-black">4</div>
+              <span>تم الاستلام</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- تفاصيل الطالب والفسحة (مع معرّف ticket-break المصلّح) -->
+        <div class="py-4 border-b-2 border-dashed border-slate-200 text-xs space-y-2">
+          <div class="flex justify-between">
+            <span class="text-slate-400">اسم الطالب/ـة:</span>
+            <strong id="ticket-student-name" class="text-slate-800">زينة اللبدي</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">الصف والشعبة:</span>
+            <strong id="ticket-grade" class="text-slate-800">الصف الثامن (أ)</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">موعد الاستلام:</span>
+            <strong id="ticket-break" class="text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md font-bold">الفسحة المدرسية (10:00 صباحاً)</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">نافذة الاستلام:</span>
+            <strong class="text-emerald-700">نافذة مقصف الصف الثامن (نافذة 1)</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">وقت تسجيل الطلب:</span>
+            <span id="ticket-time" class="text-slate-600">09:15 ص</span>
+          </div>
+        </div>
+
+        <div class="py-4 border-b-2 border-dashed border-slate-200 text-xs">
+          <div class="font-bold text-slate-500 mb-2">الوجبات المطلوبة:</div>
+          <div id="ticket-items-list" class="space-y-1.5 text-slate-700">
+            <!-- تملأ ديناميكياً -->
+          </div>
+          <div class="flex justify-between text-sm font-black pt-3 mt-3 border-t border-slate-100 text-slate-900">
+            <span>المبلغ الإجمالي:</span>
+            <span id="ticket-total-price" class="text-emerald-700 text-base font-mono">0.00 د.أ</span>
+          </div>
+        </div>
+
+        <div class="pt-4 text-center">
+          <div class="barcode-lines rounded-md mx-auto max-w-[240px] opacity-80"></div>
+          <p class="text-[10px] text-slate-400 mt-2 font-mono">RECESS CANTEEN 10:00 AM</p>
+          <p class="text-[11px] text-emerald-800 font-bold mt-1">بالهناء والعافية! يوم دراسي موفق ☀️</p>
+        </div>
+      </div>
+
+      <!-- أزرار كرت الاستلام (يتم إخفاؤها تلقائياً عند الطباعة عبر no-print) -->
+      <div id="ticket-modal-actions" class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3 no-print">
+        <button onclick="app.printTicket()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>طباعة كرت الاستلام 🖨️</span>
+        </button>
+        <button onclick="app.closeTicketModal()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-all">
+          إغلاق النافذة
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. نافذة استعراض قائمة طلبات الطالب (My Orders) -->
+  <div id="orders-list-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 fade-in max-h-[90vh] flex flex-col overflow-hidden">
+      
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            <i data-lucide="receipt" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-800 text-lg">سجل طلبات الفسحة</h3>
+            <p class="text-xs text-slate-400">متابعة حالة تحضير الوجبات لفسحة 10:00 صباحاً</p>
+          </div>
+        </div>
+        <button onclick="app.closeOrdersModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 hover:bg-slate-300 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-grow">
+        <div id="student-orders-container" class="space-y-4">
+          <!-- تملأ ديناميكياً -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. نافذة تعديل بيانات وسعر الصنف للمسؤول (Edit Item Modal) -->
+  <div id="edit-item-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 fade-in overflow-hidden">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-800 text-base">تعديل بيانات الصنف في المقصف</h3>
+            <p class="text-[11px] text-slate-400">تحديث السعر والتوفر ووقت التحضير</p>
+          </div>
+        </div>
+        <button onclick="app.closeEditModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 hover:bg-slate-300 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <input type="hidden" id="edit-item-id">
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">اسم الصنف</label>
+          <input type="text" id="edit-item-name" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">السعر (د.أ)</label>
+            <input type="number" step="0.05" min="0.10" id="edit-item-price" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-black text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">وقت التحضير</label>
+            <input type="text" id="edit-item-prep" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">حالة التوفر الحالية بالمقصف</label>
+          <select id="edit-item-available" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none">
+            <option value="true">✅ متوفر بالمقصف للطلاب</option>
+            <option value="false">❌ نفد مؤقتاً (غير متاح للطلب)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">المكونات الطازجة</label>
+          <input type="text" id="edit-item-ingredients" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button onclick="app.closeEditModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-xs">
+          إلغاء
+        </button>
+        <button onclick="app.saveEditItem()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>حفظ التعديلات</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. نافذة إضافة صنف جديد للمقصف (Add New Item Modal) -->
+  <div id="add-item-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 fade-in overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i data-lucide="plus-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-800 text-base">إضافة صنف أو وجبة جديدة للمقصف</h3>
+            <p class="text-[11px] text-slate-400">ستظهر الوجبة للطلاب فوراً في القائمة المدرسية</p>
+          </div>
+        </div>
+        <button onclick="app.closeAddItemModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 hover:bg-slate-300 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-3.5 text-xs overflow-y-auto flex-grow">
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">اسم الوجبة / الساندويش *</label>
+          <input type="text" id="add-item-name" placeholder="مثال: فطيرة زعتر بلدي، سمبوسة جبنة..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">القسم / التصنيف *</label>
+            <select id="add-item-category" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-800 focus:bg-white focus:outline-none">
+              <option value="sandwiches">الساندويشات والبيتزا</option>
+              <option value="salads">السلطات والمقبلات</option>
+              <option value="pasta">الباستا والأطباق الساخنة</option>
+              <option value="drinks">العصائر والمشروبات</option>
+              <option value="main">الأطباق الرئيسية</option>
+              <option value="sweets">الحلويات والتسالي</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">السعر بالدينار (د.أ) *</label>
+            <input type="number" step="0.05" min="0.10" id="add-item-price" value="0.75" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-black text-slate-900 focus:bg-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">السعرات التقريبية</label>
+            <input type="text" id="add-item-calories" value="200 سعرة" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">وقت التحضير</label>
+            <input type="text" id="add-item-prep" value="3 دقائق" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">وصف الصورة التفصيلي (إلزامي) *</label>
+          <textarea id="add-item-desc" rows="2" placeholder="صف شكل الوجبة ومكوناتها الظاهرة في الصورة بوضوح للطلاب..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">المكونات</label>
+          <input type="text" id="add-item-ingredients" placeholder="المكونات الطبيعية للوجبة..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:bg-white focus:outline-none">
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button onclick="app.closeAddItemModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-xs">
+          إلغاء
+        </button>
+        <button onclick="app.submitNewItem()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>إضافة الصنف للقائمة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة الربط مع Supabase وإعداد الجداول السحابية (Supabase Cloud Modal) -->
+  <div id="supabase-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 fade-in overflow-hidden">
+      
+      <div class="p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-black border border-emerald-500/30">
+            ⚡
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-base">قاعدة بيانات Supabase السحابية</h3>
+              <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Realtime</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">المزامنة الفورية لطلبات ومخزون مقصف المدرسة</p>
+          </div>
+        </div>
+        <button onclick="app.closeSupabaseModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 text-xs text-slate-700">
+        
+        <!-- بطاقة تفاصيل الاتصال الحالي -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-500">حالة الاتصال بـ Supabase:</span>
+            <span id="supabase-modal-badge" class="px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800">
+              جاري الفحص...
+            </span>
+          </div>
+
+          <div class="space-y-1 font-mono text-[11px]">
+            <div class="flex justify-between text-slate-500">
+              <span>رابط المشروع:</span>
+              <span class="font-bold text-slate-800 text-left dir-ltr">https://umkicxaprplsldbfynlt.supabase.co</span>
+            </div>
+            <div class="flex justify-between text-slate-500">
+              <span>المفتاح العام:</span>
+              <span class="font-bold text-slate-800 text-left dir-ltr">sb_publishable_m6yZU...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- تعليمات سريعة لتفعيل الجداول بالكامل -->
+        <div class="space-y-3">
+          <h4 class="font-black text-slate-900 text-sm flex items-center gap-1.5">
+            <span>🚀</span>
+            <span>خطوات تفعيل قاعدة البيانات وتحديث الجداول:</span>
+          </h4>
+
+          <ol class="space-y-2 text-slate-600 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-200/60">
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">1</span>
+              <span>اضغط على زر <strong>«نسخ سكربت SQL الكامل 📋»</strong> بالأسفل.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">2</span>
+              <span>افتح صفحة <strong>SQL Editor</strong> في لوحة Supabase.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">3</span>
+              <span>الصق الكود واضغط <strong>Run</strong> لتنشأ الجداول وتبدأ المزامنة اللحظية الفورية!</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- أزرار الإجراءات -->
+        <div class="flex flex-col sm:flex-row items-center gap-2 pt-2">
+          <button onclick="app.copySupabaseSql()" class="w-full sm:w-auto flex-grow py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span>نسخ سكربت SQL الكامل 📋</span>
+          </button>
+
+          <a href="https://supabase.com/dashboard/project/umkicxaprplsldbfynlt/sql/new" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2">
+            <span>فتح SQL Editor في Supabase ↗️</span>
+          </a>
+
+          <button onclick="app.recheckSupabase()" class="w-full sm:w-auto py-3 px-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5" title="إعادة فحص الاتصال">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>فحص</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- صندوق رسائل التنبيه العائمة (Toast Notification) -->
+  <div id="toast-container" class="fixed bottom-6 left-6 z-50 pointer-events-none flex flex-col gap-2 max-w-sm"></div>
+
+  <!-- تذييل الصفحة الرسمي مع إبراز اسم زينة اللبدي بشكل بارز ومتميز -->
+  <footer class="bg-white border-t border-slate-200 mt-16 py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+      
+      <!-- لافتة التقدير الرسمية -->
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-2xl bg-gradient-to-r from-amber-100 via-amber-200 to-amber-100 border border-amber-300 text-slate-900 shadow-sm text-sm font-black">
+        <span>⭐</span>
+        <span>مشروع وتصميم الطالبة المتميزة: <strong>زينة اللبدي</strong> - الصف الثامن (الشعبة أ)</span>
+        <span>⭐</span>
+      </div>
+
+      <div class="flex items-center justify-center gap-2 text-slate-900 font-black text-lg">
+        <span>🥪</span>
+        <span>مقصف الفُسحة - المنصة الذكية لمدرسة الصف الثامن</span>
+      </div>
+      
+      <p class="text-xs text-slate-500 max-w-xl mx-auto leading-relaxed">
+        تم تصميم هذا النظام المدرسي المبتكر خصيصاً ولصالح الطالبة <strong>زينة اللبدي</strong> لخدمة مقصف المدرسة، وتسهيل طلب الوجبات لفسحة العاشرة صباحاً (10:00 ص) دون انتظار أو طوابير.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-slate-400 pt-2">
+        <span>📍 المقصف المدرسي الرئيسي</span>
+        <span>•</span>
+        <span>⏰ موعد الفسحة المعتمد: 10:00 صباحاً</span>
+        <span>•</span>
+        <span>🍎 وجبات صحية ومخبوزات طازجة يومياً</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- السكريبتات البرمجية -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

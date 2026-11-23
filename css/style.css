@@ -1,0 +1,265 @@
+/* style.css - تخصيصات الواجهة والأنيميشن التفاعلي والطباعة لمقصف الفسحة */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap');
+
+:root {
+  --primary: #059669;
+  --primary-dark: #047857;
+  --secondary: #f59e0b;
+  --accent: #f43f5e;
+}
+
+body {
+  font-family: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
+  background-color: #faf8f5;
+  color: #1e293b;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+/* بطاقات وتأثيرات الرفع التفاعلية السلسة */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 22px 35px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* أنيميشن الطفو البطيء والمبهج */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+.floating-element {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-2deg);
+  }
+}
+.floating-element-reverse {
+  animation: float-reverse 4.5s ease-in-out infinite;
+}
+
+/* بريق ذهبي لشارة الطالبة المبدعة زينة اللبدي */
+@keyframes shimmer-gold {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.creator-badge-glow {
+  background: linear-gradient(90deg, #f59e0b 0%, #fef08a 50%, #f59e0b 100%);
+  background-size: 200% 100%;
+  animation: shimmer-gold 3s linear infinite;
+}
+
+/* نبض تنبيه الاستلام المباشر */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 16px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+.ready-pulse {
+  animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* وميض العد التنازلي للفسحة */
+@keyframes timer-glow {
+  0%, 100% {
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+  }
+  50% {
+    border-color: rgba(245, 158, 11, 0.95);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+  }
+}
+.timer-pulse {
+  animation: timer-glow 2.5s infinite;
+}
+
+/* أنيميشن ظهور تذكرة الاستلام مع ارتداد لطيف (Ticket Pop) */
+@keyframes ticketPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  70% {
+    transform: scale(1.02) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.ticket-pop {
+  animation: ticketPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* أنيميشن خط مسار التجهيز في الكرت */
+@keyframes progressGlow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+.progress-line-active {
+  animation: progressGlow 1.5s infinite ease-in-out;
+}
+
+/* تأثير النقر التفاعلي على الأزرار */
+button:active {
+  transform: scale(0.95);
+}
+
+/* شريط تمرير أنيق ومخصص */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* أنيميشن الظهور السلس */
+.fade-in {
+  animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* تأثير باركود توضيحي */
+.barcode-lines {
+  background: repeating-linear-gradient(
+    90deg,
+    #1e293b,
+    #1e293b 2px,
+    transparent 2px,
+    transparent 4px,
+    #1e293b 4px,
+    #1e293b 7px,
+    transparent 7px,
+    transparent 9px
+  );
+  height: 48px;
+}
+
+/* ======================================================== */
+/* إعدادات الطباعة المتقنة والنظيفة 100% لكرت استلام الوجبة */
+/* ======================================================== */
+@media print {
+  @page {
+    margin: 1cm;
+    size: portrait;
+  }
+  
+  /* إخفاء كافة عناصر الصفحة وأشرطة التنقل والمودالات الأخرى تماماً */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  header, 
+  footer, 
+  main, 
+  #ready-alert-banner, 
+  #cart-modal, 
+  #orders-list-modal, 
+  #auth-modal, 
+  #edit-item-modal, 
+  #add-item-modal, 
+  #toast-container,
+  .no-print {
+    display: none !important;
+  }
+
+  /* جعل حاوية التذكرة تغطي الصفحة بحدود أنيقة بدون خلفيات رمادية أو شاشات معتمة */
+  #ticket-modal {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    box-shadow: none !important;
+  }
+
+  #ticket-modal > div {
+    box-shadow: none !important;
+    border: 3px dashed #059669 !important;
+    border-radius: 20px !important;
+    max-width: 500px !important;
+    margin: 20px auto !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  #printable-ticket {
+    display: block !important;
+    padding: 24px !important;
+  }
+
+  /* إخفاء أزرار الإغلاق والطباعة داخل كرت الطباعة */
+  #ticket-modal button,
+  #ticket-modal-actions {
+    display: none !important;
+  }
+
+  /* إبراز الباركود وعناوين التذكرة للطباعة النظيفة */
+  .barcode-lines {
+    background: repeating-linear-gradient(
+      90deg,
+      #000000,
+      #000000 2px,
+      transparent 2px,
+      transparent 4px,
+      #000000 4px,
+      #000000 7px,
+      transparent 7px,
+      transparent 9px
+    ) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-item-27" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#581c87" />
+      <stop offset="100%" stop-color="#3b0764" />
+    </linearGradient>
+    <linearGradient id="plate-item-27" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#f1f5f9" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow-item-27" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+    <filter id="glow-item-27">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- خلفية التدرج النابضة بالحياة -->
+  <rect width="600" height="400" fill="url(#bg-item-27)" />
+
+  <!-- زخرفة دائرية خلفية ناعمة -->
+  <circle cx="300" cy="180" r="160" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="300" cy="180" r="120" fill="#ffffff" fill-opacity="0.08" />
+
+  <!-- الصحن أو القاعدة الفنية للوجبة -->
+  <ellipse cx="300" cy="225" rx="170" ry="85" fill="#000000" fill-opacity="0.12" />
+  <ellipse cx="300" cy="215" rx="160" ry="78" fill="url(#plate-item-27)" filter="url(#shadow-item-27)" stroke="#e2e8f0" stroke-width="3" />
+  <ellipse cx="300" cy="215" rx="135" ry="62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7" />
+
+  <!-- عناصر الوجبة المركزية والرسومات المتجهة -->
+  <g id="food-art" transform="translate(0, -10)">
+    
+      <!-- شريحة ليزي كيك كلاسيكية مثلجة -->
+      <polygon points="230,225 300,165 370,225" fill="#3b0764" stroke="#1c0b02" stroke-width="3" />
+      <!-- قطع بسكويت الشاي المقرمش الموزعة بالكاكاو (موزاييك كيك) -->
+      <rect x="255" y="200" width="14" height="10" rx="2" fill="#fde68a" stroke="#ca8a04" stroke-width="1" transform="rotate(15 262 205)" />
+      <rect x="290" y="185" width="16" height="11" rx="2" fill="#fde68a" stroke="#ca8a04" stroke-width="1" transform="rotate(-20 298 190)" />
+      <rect x="325" y="205" width="15" height="10" rx="2" fill="#fde68a" stroke="#ca8a04" stroke-width="1" transform="rotate(25 332 210)" />
+      <rect x="285" y="210" width="14" height="9" rx="2" fill="#fde68a" stroke="#ca8a04" stroke-width="1" transform="rotate(-10 292 214)" />
+      <!-- رشة جوز هند أبيض خفيف -->
+      <circle cx="270" cy="190" r="2" fill="#ffffff" />
+      <circle cx="315" cy="195" r="2" fill="#ffffff" />
+      <circle cx="300" cy="205" r="2" fill="#ffffff" />
+    
+  </g>
+
+  <!-- أيقونة تعبيرية طافية مع تأثير الظل -->
+  <g transform="translate(480, 50)" filter="url(#shadow-item-27)">
+    <circle cx="0" cy="0" r="32" fill="#ffffff" />
+    <text x="0" y="11" font-size="30" text-anchor="middle">🍰</text>
+  </g>
+
+  <!-- شارة التصنيف العلوية -->
+  <g transform="translate(40, 45)">
+    <rect x="0" y="0" width="140" height="34" rx="17" fill="#000000" fill-opacity="0.3" backdrop-filter="blur(4px)" />
+    <text x="70" y="22" fill="#ffffff" font-family="'Cairo', sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+      الحلويات والتسالي
+    </text>
+  </g>
+
+  <!-- شريط اسم الصنف في الأسفل مع تباين عالي وقراءة واضحة -->
+  <g transform="translate(0, 330)">
+    <rect width="600" height="70" fill="#0f172a" fill-opacity="0.85" />
+    <text x="300" y="44" fill="#ffffff" font-family="'Cairo', 'Tajawal', sans-serif" font-size="22" font-weight="900" text-anchor="middle">
+      ليزي كيك
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-item-13" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#92400e" />
+    </linearGradient>
+    <linearGradient id="plate-item-13" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#f1f5f9" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="shadow-item-13" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.18" />
+    </filter>
+    <filter id="glow-item-13">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- خلفية التدرج النابضة بالحياة -->
+  <rect width="600" height="400" fill="url(#bg-item-13)" />
+
+  <!-- زخرفة دائرية خلفية ناعمة -->
+  <circle cx="300" cy="180" r="160" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="300" cy="180" r="120" fill="#ffffff" fill-opacity="0.08" />
+
+  <!-- الصحن أو القاعدة الفنية للوجبة -->
+  <ellipse cx="300" cy="225" rx="170" ry="85" fill="#000000" fill-opacity="0.12" />
+  <ellipse cx="300" cy="215" rx="160" ry="78" fill="url(#plate-item-13)" filter="url(#shadow-item-13)" stroke="#e2e8f0" stroke-width="3" />
+  <ellipse cx="300" cy="215" rx="135" ry="62" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7" />
+
+  <!-- عناصر الوجبة المركزية والرسومات المتجهة -->
+  <g id="food-art" transform="translate(0, -10)">
+    
+      <ellipse cx="300" cy="210" rx="95" ry="46" fill="#fef3c7" />
+      <!-- أشرطة الفوتتشيني العريضة بالكريمة البيضاء الفاخرة -->
+      <path d="M225,200 Q265,165 315,205 T375,190" fill="none" stroke="#fffbeb" stroke-width="16" stroke-linecap="round" />
+      <path d="M240,215 Q285,180 345,210" fill="none" stroke="#fef08a" stroke-width="14" stroke-linecap="round" />
+      <path d="M235,185 Q295,160 355,185" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" />
+      <!-- شرائح فطر طازجة برونزية -->
+      <path d="M270,185 Q280,175 290,185 Z" fill="#78350f" opacity="0.8" />
+      <rect x="278" y="185" width="5" height="7" fill="#78350f" opacity="0.8" />
+      <path d="M320,195 Q330,185 340,195 Z" fill="#78350f" opacity="0.8" />
+      <rect x="328" y="195" width="5" height="7" fill="#78350f" opacity="0.8" />
+      <!-- رشة فلفل أسود وبقدونس مجفف -->
+      <circle cx="260" cy="195" r="1.5" fill="#1e293b" />
+      <circle cx="300" cy="180" r="1.5" fill="#1e293b" />
+      <circle cx="340" cy="205" r="1.5" fill="#1e293b" />
+      <circle cx="290" cy="210" r="2" fill="#15803d" />
+      <circle cx="330" cy="180" r="2" fill="#15803d" />
+    
+  </g>
+
+  <!-- أيقونة تعبيرية طافية مع تأثير الظل -->
+  <g transform="translate(480, 50)" filter="url(#shadow-item-13)">
+    <circle cx="0" cy="0" r="32" fill="#ffffff" />
+    <text x="0" y="11" font-size="30" text-anchor="middle">🧀</text>
+  </g>
+
+  <!-- شارة التصنيف العلوية -->
+  <g transform="translate(40, 45)">
+    <rect x="0" y="0" width="140" height="34" rx="17" fill="#000000" fill-opacity="0.3" backdrop-filter="blur(4px)" />
+    <text x="70" y="22" fill="#ffffff" font-family="'Cairo', sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+      الباستا والأطباق الساخنة
+    </text>
+  </g>
+
+  <!-- شريط اسم الصنف في الأسفل مع تباين عالي وقراءة واضحة -->
+  <g transform="translate(0, 330)">
+    <rect width="600" height="70" fill="#0f172a" fill-opacity="0.85" />
+    <text x="300" y="44" fill="#ffffff" font-family="'Cairo', 'Tajawal', sans-serif" font-size="22" font-weight="900" text-anchor="middle">
+      فوتتشيني
+    </text>
+  </g>
+</svg>
