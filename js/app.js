@@ -1516,15 +1516,24 @@ class KanteenApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  new KanteenApp();
+  try {
+    new KanteenApp();
+  } catch (err) {
+    console.error('KanteenApp init error:', err);
+  }
 
-  // إخفاء شاشة التحميل بعد تهيئة التطبيق
-  const loadingScreen = document.getElementById('app-loading-screen');
-  if (loadingScreen) {
-    setTimeout(() => {
-      loadingScreen.style.opacity = '0';
-      loadingScreen.style.visibility = 'hidden';
-      setTimeout(() => loadingScreen.remove(), 450);
-    }, 600);
+  // إخفاء شاشة التحميل بعد تهيئة التطبيق (أو مباشرةً إذا فشل)
+  if (window.hideAppLoader) {
+    clearTimeout(window._loaderTimeout);
+    setTimeout(window.hideAppLoader, 500);
+  } else {
+    const loadingScreen = document.getElementById('app-loading-screen');
+    if (loadingScreen) {
+      setTimeout(() => {
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.visibility = 'hidden';
+        setTimeout(() => loadingScreen.remove(), 600);
+      }, 500);
+    }
   }
 });
