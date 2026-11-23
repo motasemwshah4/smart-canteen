@@ -16,7 +16,8 @@ class Store {
     this.listeners = new Set();
     this.initData();
     this.setupStorageListener();
-    this.syncWithSupabase();
+    // مزامنة Supabase بشكل غير متزامن - لا تعيق العرض الأولي
+    setTimeout(() => this.syncWithSupabase(), 1500);
   }
 
   initData() {

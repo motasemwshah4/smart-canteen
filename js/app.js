@@ -1517,4 +1517,14 @@ class KanteenApp {
 
 document.addEventListener('DOMContentLoaded', () => {
   new KanteenApp();
+
+  // إخفاء شاشة التحميل بعد تهيئة التطبيق
+  const loadingScreen = document.getElementById('app-loading-screen');
+  if (loadingScreen) {
+    setTimeout(() => {
+      loadingScreen.style.opacity = '0';
+      loadingScreen.style.visibility = 'hidden';
+      setTimeout(() => loadingScreen.remove(), 450);
+    }, 600);
+  }
 });
