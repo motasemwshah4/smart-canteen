@@ -1,4 +1,4 @@
-/* style.css - تخصيصات الواجهة والأنيميشن التفاعلي والطباعة لمقصف الفسحة */
+/* style.css - تخصيصات الواجهة والأنيميشن التفاعلي والتجاوب لجميع الشاشات لمقصف الفسحة */
 
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap');
 
@@ -9,21 +9,31 @@
   --accent: #f43f5e;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
   background-color: #faf8f5;
   color: #1e293b;
   direction: rtl;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* بطاقات وتأثيرات الرفع التفاعلية السلسة */
 .card-hover {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, box-shadow;
 }
-.card-hover:hover {
-  transform: translateY(-8px) scale(1.015);
-  box-shadow: 0 22px 35px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.012);
+    box-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+  }
 }
 
 /* أنيميشن الطفو البطيء والمبهج */
@@ -118,24 +128,19 @@ body {
   animation: ticketPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* أنيميشن خط مسار التجهيز في الكرت */
-@keyframes progressGlow {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
+/* تأثير النقر التفاعلي على الأزرار والشاشات اللمسية */
+button {
+  touch-action: manipulation;
 }
-.progress-line-active {
-  animation: progressGlow 1.5s infinite ease-in-out;
-}
-
-/* تأثير النقر التفاعلي على الأزرار */
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
 }
 
 /* شريط تمرير أنيق ومخصص */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
@@ -148,7 +153,17 @@ button:active {
   background: #94a3b8;
 }
 
-/* أنيميشن الظهور السلس */
+/* إخفاء شريط التمرير لأشرطة التصنيفات العرضية */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* أنيميشن الظهور السلس للمودال */
 .fade-in {
   animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -164,7 +179,7 @@ button:active {
   }
 }
 
-/* تأثير باركود توضيحي */
+/* تأثير الباركود لكرت الاستلام */
 .barcode-lines {
   background: repeating-linear-gradient(
     90deg,
@@ -177,7 +192,58 @@ button:active {
     transparent 7px,
     transparent 9px
   );
-  height: 48px;
+  height: 44px;
+}
+
+/* شريط السلة العائم المخصص للهواتف المحمولة */
+#mobile-bottom-bar {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ======================================================== */
+/* تحسينات الشاشات المختلفة (Responsive Media Queries) */
+/* ======================================================== */
+
+/* هواتف ذكية صغيرة ومتوسطة (< 640px) */
+@media (max-width: 639px) {
+  .modal-sheet {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .modal-sheet > div {
+    max-height: 90vh !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    width: 100% !important;
+  }
+  
+  /* تقليص أحجام العناوين قليلاً لمنع الالتفاف غير المرغوب */
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* أزرار مريحة للمس */
+  .touch-target {
+    min-height: 44px;
+  }
+}
+
+/* أجهزة لوحية (Tablets / iPad: 640px - 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .tablet-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 }
 
 /* ======================================================== */
@@ -189,7 +255,6 @@ button:active {
     size: portrait;
   }
   
-  /* إخفاء كافة عناصر الصفحة وأشرطة التنقل والمودالات الأخرى تماماً */
   body {
     background: #ffffff !important;
     color: #000000 !important;
@@ -202,6 +267,7 @@ button:active {
   footer, 
   main, 
   #ready-alert-banner, 
+  #mobile-bottom-bar,
   #cart-modal, 
   #orders-list-modal, 
   #auth-modal, 
@@ -212,7 +278,6 @@ button:active {
     display: none !important;
   }
 
-  /* جعل حاوية التذكرة تغطي الصفحة بحدود أنيقة بدون خلفيات رمادية أو شاشات معتمة */
   #ticket-modal {
     position: static !important;
     inset: auto !important;
@@ -240,13 +305,11 @@ button:active {
     padding: 24px !important;
   }
 
-  /* إخفاء أزرار الإغلاق والطباعة داخل كرت الطباعة */
   #ticket-modal button,
   #ticket-modal-actions {
     display: none !important;
   }
 
-  /* إبراز الباركود وعناوين التذكرة للطباعة النظيفة */
   .barcode-lines {
     background: repeating-linear-gradient(
       90deg,

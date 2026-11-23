@@ -133,10 +133,9 @@ async function runComprehensiveVerification() {
     'login-save-quick',
     'signup-save-quick',
     'btn-show-ticket-nav',
-    'btn-supabase-status',
-    'supabase-modal',
-    'supabase-status-dot',
-    'supabase-status-text'
+    'mobile-bottom-bar',
+    'mobile-cart-badge',
+    'mobile-cart-total'
   ];
 
   let allIdsPresent = true;

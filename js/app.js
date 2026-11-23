@@ -62,7 +62,6 @@ class KanteenApp {
     this.updateStudentOrdersUI(state.orders);
     this.checkReadyOrdersNotification(state.orders);
     this.renderQuickLoginList(state.quickLoginUsers);
-    this.updateSupabaseStatusUI(state.supabase);
     this.refreshIcons();
   }
 
@@ -270,84 +269,6 @@ class KanteenApp {
   removeFromQuickLogin(userId) {
     store.removeFromQuickLogin(userId);
     this.showToast('تمت إزالة الحساب من قائمة الدخول السريع.');
-  }
-
-  // --- إدارة ومراقبة ربط Supabase السحابي ---
-  openSupabaseModal() {
-    const modal = document.getElementById('supabase-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-    const state = store.getState();
-    this.updateSupabaseStatusUI(state.supabase);
-    this.refreshIcons();
-  }
-
-  closeSupabaseModal() {
-    const modal = document.getElementById('supabase-modal');
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-  }
-
-  updateSupabaseStatusUI(supabaseStatus) {
-    const dot = document.getElementById('supabase-status-dot');
-    const text = document.getElementById('supabase-status-text');
-    const badge = document.getElementById('supabase-modal-badge');
-    const btn = document.getElementById('btn-supabase-status');
-
-    if (!supabaseStatus) return;
-
-    if (supabaseStatus.connected && supabaseStatus.tablesReady) {
-      if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
-      if (text) text.textContent = 'Supabase سحابي نشط 🟢';
-      if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300';
-        badge.textContent = 'متصل والجداول جاهزة ⚡';
-      }
-      if (btn) btn.className = 'px-3 py-2 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs border border-emerald-500/50';
-    } else if (supabaseStatus.connected && !supabaseStatus.tablesReady) {
-      if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse';
-      if (text) text.textContent = 'Supabase (بانتظار الجداول) 🟡';
-      if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-300';
-        badge.textContent = 'متصل (بانتظار تنفيذ SQL) 🟡';
-      }
-      if (btn) btn.className = 'px-3 py-2 bg-slate-900 hover:bg-slate-800 text-amber-300 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs border border-amber-400/50';
-    } else {
-      if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-400';
-      if (text) text.textContent = 'Supabase السحابي ⚪';
-      if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-black bg-slate-100 text-slate-700 border border-slate-300';
-        badge.textContent = 'غير متصل (جاري العمل محلياً) ⚪';
-      }
-    }
-  }
-
-  async copySupabaseSql() {
-    try {
-      const res = await fetch('./supabase_setup.sql');
-      const sqlText = await res.text();
-      await navigator.clipboard.writeText(sqlText);
-      this.showToast('تم نسخ سكربت SQL لإنشاء جداول Supabase بنجاح! الصقه في SQL Editor 📋');
-    } catch (e) {
-      window.open('./supabase_setup.sql', '_blank');
-      this.showToast('تم فتح ملف سكربت SQL يمكنك نسخه الآن.');
-    }
-  }
-
-  async recheckSupabase() {
-    this.showToast('جاري فحص اتصال Supabase والجداول... 🔄');
-    const status = await store.syncWithSupabase();
-    if (status && status.tablesReady) {
-      this.showToast('رائع! تم الاتصال بنجاح وتفعيل مزامنة Supabase السحابية 🎉');
-    } else if (status && status.connected) {
-      this.showToast('المشروع متصل! يرجى تنفيذ سكربت SQL لإنشاء الجداول في Supabase ⚡');
-    } else {
-      this.showToast('تعذر الاتصال بـ Supabase حالياً، يتم استخدام التخزين المحلي الآمن.');
-    }
   }
 
   quickLogin(userId) {
@@ -739,9 +660,24 @@ class KanteenApp {
 
     const badge = document.getElementById('cart-badge');
     const navTotal = document.getElementById('cart-nav-total');
+    const mobileBadge = document.getElementById('mobile-cart-badge');
+    const mobileTotal = document.getElementById('mobile-cart-total');
+    const mobileBar = document.getElementById('mobile-bottom-bar');
 
     if (badge) badge.textContent = count;
     if (navTotal) navTotal.textContent = `${total.toFixed(2)} ${APP_CONFIG.currency}`;
+    if (mobileBadge) mobileBadge.textContent = count;
+    if (mobileTotal) mobileTotal.textContent = `${total.toFixed(2)} ${APP_CONFIG.currency}`;
+
+    if (mobileBar) {
+      if (count > 0) {
+        mobileBar.classList.remove('hidden');
+        mobileBar.classList.add('flex');
+      } else {
+        mobileBar.classList.add('hidden');
+        mobileBar.classList.remove('flex');
+      }
+    }
   }
 
   renderCart(cart) {
